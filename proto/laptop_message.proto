@@ -16,7 +16,7 @@ message Laptop {
   string name = 3;
   CPU cpu = 4;
   Memory ram = 5;
-  repeated CPU gpus = 6;
+  repeated GPU gpus = 6;
   repeated Storage storages = 7;
   Screen screen = 8;
   Keyboard keyboard = 9;
