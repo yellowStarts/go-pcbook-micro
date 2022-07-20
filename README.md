@@ -34,3 +34,17 @@ $ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 ```
 $ protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
 ```
+
+## 项目使用
+清除 `ptotoc` 生成的 Go 代码:
+```
+$ make clean
+```
+生成代码:
+```
+$ make gen
+```
+运行程序:
+```
+$ make run
+```
