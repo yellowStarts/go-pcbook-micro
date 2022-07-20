@@ -4,14 +4,24 @@ syntax = "proto3";
 // option go_package="path;name";
 // path 表示生成的 go 文件的存放地址，会自动生成目录的
 // name 表示生产的 go 文件所属的包名
-option go_package="./;pb";
-package pb;
+option go_package = "./;pb";
+package proto;
+
+import "memory_message.proto";
 
 message CPU {
-    string branf = 1;           // 品牌
-    string name =2;             // 名称
-    uint32 number_cores = 3;    // 支持的内核个数
-    uint32 number_threads = 4;  // 支持的线程个数
-    float  min_ghz = 5;         // 最小频率
-    double max_ghz=6;           // 最大频率
+  string brand = 1;          // 品牌
+  string name = 2;           // 名称
+  uint32 number_cores = 3;   // 支持的内核个数
+  uint32 number_threads = 4; // 支持的线程个数
+  double min_ghz = 5;        // 最小频率
+  double max_ghz = 6;        // 最大频率
+}
+
+message GPU {
+  string brand = 1;   // 品牌
+  string name = 2;    // 名称
+  double min_ghz = 3; // 最小频率
+  double max_ghz = 4; // 最大频率
+  Memory memory = 5;  // 内存
 }

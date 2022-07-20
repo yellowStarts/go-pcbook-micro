@@ -35,6 +35,13 @@ $ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 $ protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
 ```
 
+4. Clang-Format proto 格式化工具
+- 链接：[LLVM-14.0.6-win64.exe](https://github.com/llvm/llvm-project/releases/tag/llvmorg-14.0.6) 
+- 介绍：可用于格式化（排版）多种不同语言的代码。其自带的排版格式主要有：LLVM, Google, Chromium, Mozilla, WebKit等
+若 `-style=google` ，则表示应用Google的格式化风格
+- 安装（window）：从链接处下载之后就可以进行安装了，安装时注意勾选环境变量
+- 检查下是否安装成功：`clang-format -version`
+
 ## 项目使用
 清除 `ptotoc` 生成的 Go 代码:
 ```
@@ -48,3 +55,17 @@ $ make gen
 ```
 $ make run
 ```
+
+## 注意事项
+- proto 文件 `import` 导包红线, 在 vscode 中 首选项>设置>搜索“protoc”, 做如下修改：
+```
+"protoc": {
+        "path": "D:/Program Files/Go/bin/protoc",
+        "options": [
+            "--proto_path=proto",
+        ]
+    }
+```
+将 `path` 改成 `protoc` 命令实际存储的位置，将 `--proto_path` 修改成项目 proto 源文件存储的目录
+
+

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "./;pb";
+package proto;
+
+message Screen {
+  // 分辨率
+  message Resolution {
+    uint32 width = 1;
+    uint32 height = 2;
+  }
+
+  // 面板类型
+  enum Panel {
+    UNKNOW = 0;
+    IPS = 1;
+    OLED = 2;
+  }
+
+  float size_inch = 1;       // 尺寸
+  Resolution resolution = 2; // 分辨率
+  Panel panel = 3;           // 面板
+  bool multitouch = 4;       // 是否可以多点触摸
+}

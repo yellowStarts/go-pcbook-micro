@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "./;pb";
+package proto;
+
+message Memory {
+  enum Uint {
+    UNKNOWN = 0;
+    BIT = 1;
+    BYTE = 2;
+    KILOBYTE = 3;
+    MEGABYTE = 4;
+    GIGABYTE = 5;
+    TERABYTE = 6;
+  }
+
+  uint64 value = 1; // 内存大小数值
+  Uint uint = 2;    // 内存大小单位
+}
