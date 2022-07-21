@@ -42,6 +42,66 @@ $ protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
 - 安装（window）：从链接处下载之后就可以进行安装了，安装时注意勾选环境变量
 - 检查下是否安装成功：`clang-format -version`
 
+5. Evans
+- 链接：[Evans](https://github.com/ktr0731/evans)
+- 介绍：`Evans` 是一款超酷的 `gRPC` 客户端，可让你构建并在交互式shell中将请求发送到 `gRPC` 服务器。
+- 安装：
+    1. 进入 [Evans release](https://github.com/ktr0731/evans/releases) 页面，选择适合自己操作系统的压缩包文件
+    2. 解压 `evans_xx_xx.tar.gz` 并进入 `evans_xx_xx.tar`,
+    ```
+    $ cd evans_xx_xx.tar.gz
+    ```
+    3. 再解压 `evans_xx_xx.tar` 并进入 `evans_xx_xx`,
+     ```
+    $ cd evans_xx_xx
+    ```
+    4. 将启动的 `evans` 二进制文件移动到被添加到环境变量的任意 path下，如 `$GOPATH/bin`，这里不建议直接将其和系统的以下path放在一起。
+    ```
+    $ mv evans $GOPATH/bin
+    ```
+    >tip: `$GOPATH`为你本机的实际文件夹地址
+    5. 验证安装结果
+    ```
+    $ evans --version
+    evans 0.10.8
+    ```
+-  go install: `go install github.com/ktr0731/evans@latest`
+-  使用：
+    
+    连接服务器：
+    ```
+    $ evans -r repl -p 8080
+    ```
+    查看服务上所有可用的软件包:
+    ```
+    $ show package
+    ```
+    选择特定的软件包:
+    ```
+    $ package proto
+    ```
+    显示该软件包所有的服务:
+    ```
+    $ show service
+    ```
+    显示该软件包所有的消息
+    ```
+    $ show message
+    ```
+    获取消息格式：
+    ```
+    $ desc XxxxRequest
+    ```
+    选择某个服务:
+    ```
+    $ service LaptopService
+    ```
+    待用该服务下的 API：
+    ```
+    $ call CreateLaptop
+    ```
+    调用API下，停止重复字段输入，使用 `Ctrl + D`
+    
 ## 项目使用
 清除 `ptotoc` 生成的 Go 代码:
 ```

@@ -8,7 +8,7 @@ import "memory_message.proto";
 import "screen_message.proto";
 import "keyboard_message.proto";
 import "storage_message.proto";
-import "timestamp.proto";
+// import "timestamp.proto";
 
 message Laptop {
   string id = 1;
@@ -26,5 +26,5 @@ message Laptop {
   }
   double price_usd = 12;
   uint32 release_year = 13;
-  google.protobuf.Timestamp updated_at = 14;
+  // google.protobuf.Timestamp updated_at = 14;
 }

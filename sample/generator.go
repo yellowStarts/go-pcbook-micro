@@ -2,8 +2,6 @@ package sample
 
 import (
 	"go-pcbook-micro/pb"
-
-	"github.com/golang/protobuf/ptypes"
 )
 
 // NewKeyboard 键盘实例
@@ -126,7 +124,7 @@ func NewLaptop() *pb.Laptop {
 		},
 		PriceUsd:    randomFloat64(1500, 3000),
 		ReleaseYear: uint32(randomInt(2015, 2022)),
-		UpdatedAt:   ptypes.TimestampNow(),
+		// UpdatedAt:   ptypes.TimestampNow(),
 	}
 
 	return laptop
