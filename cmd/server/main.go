@@ -76,8 +76,9 @@ func loadTLSCredentials() (credentials.TransportCredentials, error) {
 
 func main() {
 	port := flag.Int("port", 0, "the server port")
+	enableTLS := flag.Bool("tls", false, "enable SSL/TLS")
 	flag.Parse()
-	log.Printf("start server on port %d", *port)
+	log.Printf("start server on port %d, TLS = %t", *port, *enableTLS)
 
 	// authService
 	userStore := service.NewInMemoryUserStore()
@@ -94,19 +95,23 @@ func main() {
 	ratingStore := service.NewInMemoryRatingStore()
 	laptopServer := service.NewLaptopServer(laptopStore, imageStore, ratingStore)
 
-	// 获取tls 凭据对象
-	tlsCredentials, err := loadTLSCredentials()
-	if err != nil {
-		log.Fatal("cannot load TLS credentials: ", err)
-	}
-
-	// grpcServer
+	// 拦截器
 	interceptor := service.NewAuthInterceptor(jwtManager, accessibleRoles())
-	grpcServer := grpc.NewServer(
-		grpc.Creds(tlsCredentials),
+	serverOptions := []grpc.ServerOption{
 		grpc.UnaryInterceptor(interceptor.Unary()),   // 一元rpc拦截器
 		grpc.StreamInterceptor(interceptor.Stream()), // 流式rpc拦截器
-	)
+	}
+	if *enableTLS {
+		// 获取tls 凭据对象
+		tlsCredentials, err := loadTLSCredentials()
+		if err != nil {
+			log.Fatal("cannot load TLS credentials: ", err)
+		}
+
+		serverOptions = append(serverOptions, grpc.Creds(tlsCredentials))
+	}
+	// grpcServer
+	grpcServer := grpc.NewServer(serverOptions...)
 	// 注册服务
 	pb.RegisterAuthServiceServer(grpcServer, authService)
 	pb.RegisterLaptopServiceServer(grpcServer, laptopServer)
