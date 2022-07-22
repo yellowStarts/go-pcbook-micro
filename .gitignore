@@ -2,3 +2,5 @@
 pb/*.go
 tmp/*
 images/*
+cert/*.pem
+cert/*.srl

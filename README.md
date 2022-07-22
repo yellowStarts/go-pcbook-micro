@@ -105,6 +105,9 @@ $ protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
 ## 资源
 - [jwt.io](https://jwt.io/) 解析 jwt token。
 
+- [OpenSSL 安装](http://slproweb.com/products/Win32OpenSSL.html)
+
+- [如何创建和签名SSL/TLS证书？](https://www.cnblogs.com/shisuizhe/p/13712591.html)
     
 ## 项目使用
 清除 `ptotoc` 生成的 Go 代码:
@@ -115,9 +118,21 @@ $ make clean
 ```
 $ make gen
 ```
-运行程序:
+运行服务器:
 ```
-$ make run
+$ make server
+```
+运行客户端:
+```
+$ make client
+```
+测试：
+```
+$ make test
+```
+运行生成 `TLS` 证书脚本:
+```
+$ make cert
 ```
 
 ## 注意事项

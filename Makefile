@@ -15,4 +15,7 @@ test:
 # -race 检测代码中的 race 情况
 	go test -cover -race ./...
 
-.PHONY: gen clean server client test
+cert: # 前提需要安装 openssl
+	cd cert; ./gen.sh; cd ..
+
+.PHONY: gen clean server client test cert

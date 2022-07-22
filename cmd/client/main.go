@@ -1,16 +1,20 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"flag"
 	"fmt"
 	"go-pcbook-micro/client"
 	"go-pcbook-micro/pb"
 	"go-pcbook-micro/sample"
+	"io/ioutil"
 	"log"
 	"strings"
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 func testCreateLaptop(laptopClient *client.LaptopClient) {
@@ -87,12 +91,44 @@ func authMethods() map[string]bool {
 	}
 }
 
+func loadTLSCredentials() (credentials.TransportCredentials, error) {
+	// 加载签署服务器证书的CA的证书
+	pemServerCA, err := ioutil.ReadFile("cert/ca-cert.pem")
+	if err != nil {
+		return nil, err
+	}
+	// 创建 x509证书池
+	certPool := x509.NewCertPool()
+	if !certPool.AppendCertsFromPEM(pemServerCA) {
+		return nil, fmt.Errorf("failed to add server CA's certificate")
+	}
+	// 加载客户端证书和私钥
+	clientCert, err := tls.LoadX509KeyPair("cert/client-cert.pem", "cert/client-key.pem")
+	if err != nil {
+		return nil, err
+	}
+
+	// 创建凭据并返回
+	config := &tls.Config{
+		Certificates: []tls.Certificate{clientCert},
+		RootCAs:      certPool,
+	}
+
+	return credentials.NewTLS(config), nil
+}
+
 func main() {
 	serverAddress := flag.String("address", "", "the server address")
 	flag.Parse()
 	log.Printf("dial server %s", *serverAddress)
 
-	conn1, err := grpc.Dial(*serverAddress, grpc.WithInsecure())
+	// 获取凭据对象
+	tlsCredentials, err := loadTLSCredentials()
+	if err != nil {
+		log.Fatal("cannot load TLS credentials: ", err)
+	}
+
+	conn1, err := grpc.Dial(*serverAddress, grpc.WithTransportCredentials(tlsCredentials))
 	if err != nil {
 		log.Fatal("cannot dial server: ", err)
 	}
@@ -105,7 +141,7 @@ func main() {
 
 	conn2, err := grpc.Dial(
 		*serverAddress,
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(tlsCredentials),
 		grpc.WithUnaryInterceptor(interceptor.Unary()),
 		grpc.WithStreamInterceptor(interceptor.Stream()),
 	)
