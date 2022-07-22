@@ -14,3 +14,5 @@ test:
 # -cover 衡量测试的代码覆盖率 
 # -race 检测代码中的 race 情况
 	go test -cover -race ./...
+
+.PHONY: gen clean server client test

@@ -101,6 +101,10 @@ $ protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
     $ call CreateLaptop
     ```
     调用API下，停止重复字段输入，使用 `Ctrl + D`
+
+## 资源
+- [jwt.io](https://jwt.io/) 解析 jwt token。
+
     
 ## 项目使用
 清除 `ptotoc` 生成的 Go 代码:
