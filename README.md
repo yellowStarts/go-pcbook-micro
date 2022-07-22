@@ -107,7 +107,7 @@ $ protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
 
 - [OpenSSL 安装](http://slproweb.com/products/Win32OpenSSL.html)
 
-- [如何创建和签名SSL/TLS证书？](https://www.cnblogs.com/shisuizhe/p/13712591.html)
+- [如何创建和签名SSL/TLS证书？](https://github.com/yellowStarts/go-pcbook-micro/blob/main/cert/post.md)
     
 ## 项目使用
 清除 `ptotoc` 生成的 Go 代码:
