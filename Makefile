@@ -1,5 +1,5 @@
 gen:
-	protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
+	protoc --proto_path=proto proto/*.proto --go_out ./pb --go-grpc_out=require_unimplemented_servers=false:./pb --grpc-gateway_out ./pb --openapiv2_out ./swagger
 
 clean:
 	rm -rf pb/*
@@ -18,6 +18,9 @@ server2-tls:
 
 server:
 	go run cmd/server/main.go -port 8080
+
+server-rest:
+	go run cmd/server/main.go -port 8081 -type rest -endpoint 127.0.0.1:8080
 
 client:
 	go run cmd/client/main.go -address 127.0.0.1:8080

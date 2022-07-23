@@ -249,6 +249,11 @@ http {
     }
 }
 ```
+7. grpc-gateway
+- 链接（使用 v2 版本）：https://github.com/grpc-ecosystem/grpc-gateway/tree/v2.11.0
+
+8. Swagger
+- 链接：
 
 ## 资源
 - [jwt.io](https://jwt.io/) 解析 jwt token。
@@ -295,4 +300,4 @@ $ make cert
 ```
 将 `path` 改成 `protoc` 命令实际存储的位置，将 `--proto_path` 修改成项目 proto 源文件存储的目录
 
-
+- [missing mustEmbedUnimplemented*Server method； protobuf](https://blog.csdn.net/qq_38963393/article/details/122273996)

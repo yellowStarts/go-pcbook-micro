@@ -15,6 +15,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+
 )
 
 func testCreateLaptop(laptopClient *client.LaptopClient) {
