@@ -101,6 +101,154 @@ $ protoc --proto_path=proto proto/*.proto --go_out=plugins=grpc:pb
     $ call CreateLaptop
     ```
     调用API下，停止重复字段输入，使用 `Ctrl + D`
+6. Nginx
+- 下载链接：http://nginx.org/en/download.html
+- 负载均衡：
+```
+worker_processes  1;
+
+error_log  logs/error.log;
+
+events {
+    worker_connections  10;
+}
+
+
+http {
+    access_log  logs/access.log;
+
+    upstream pcbook_service {
+        server 127.0.0.1:50051;
+        server 127.0.0.1:50052;
+    }
+
+    server {
+        listen       8080 http2;
+
+        location / {
+           grpc_pass grpc://pcbook_service;
+        }
+    }
+}
+```
+- 负载均衡-SSL：
+```
+worker_processes  1;
+
+error_log  logs/error.log;
+
+events {
+    worker_connections  10;
+}
+
+
+http {
+    access_log  logs/access.log;
+
+    upstream pcbook_service {
+        server 127.0.0.1:50051;
+        server 127.0.0.1:50052;
+    }
+
+    server {
+        listen       8080 ssl http2;
+
+        ssl_certificate ../cert/server-cert.pem;
+        ssl_certificate_key ../cert/server-key.pem;
+
+        ssl_client_certificate ../cert/ca-cert.pem;
+        ssl_verify_client on;
+
+        location / {
+           grpc_pass grpc://pcbook_service;
+        }
+    }
+}
+```
+- 负载均衡-SSL-服务器和Nginx之间授信(双向TLS)：
+```
+worker_processes  1;
+
+error_log  logs/error.log;
+
+events {
+    worker_connections  10;
+}
+
+
+http {
+    access_log  logs/access.log;
+
+    upstream auth_service {
+        server 127.0.0.1:50051;
+        server 127.0.0.1:50052;
+    }
+
+    server {
+        listen       8080 ssl http2;
+
+        ssl_certificate ../cert/server-cert.pem;
+        ssl_certificate_key ../cert/server-key.pem;
+
+        ssl_client_certificate ../cert/ca-cert.pem;
+        ssl_verify_client on;
+
+        location / {
+           grpc_pass grpcs://pcbook_service;
+
+           grpc_ssl_certificate ../cert/server-cert.pem;
+           grpc_ssl_certificate_key ../cert/server-key.pem;
+        }
+    }
+}
+```
+- 负载均衡-SSL-服务器和Nginx之间授信(双向TLS)-指定rpc：
+```
+worker_processes  1;
+
+error_log  logs/error.log;
+
+events {
+    worker_connections  10;
+}
+
+
+http {
+    access_log  logs/access.log;
+
+    upstream auth_services {
+        server 127.0.0.1:50051;
+    }
+
+    upstream laptop_services {
+        server 127.0.0.1:50052;
+    }
+
+    server {
+        listen       8080 ssl http2;
+
+        ssl_certificate ../cert/server-cert.pem;
+        ssl_certificate_key ../cert/server-key.pem;
+
+        ssl_client_certificate ../cert/ca-cert.pem;
+        ssl_verify_client on;
+
+        location /pcbook.AuthService {
+           grpc_pass grpcs://auth_services;
+
+           grpc_ssl_certificate ../cert/server-cert.pem;
+           grpc_ssl_certificate_key ../cert/server-key.pem;
+        }
+
+        location /pcbook.LaptopService {
+           grpc_pass grpcs://laptop_services;
+        
+           grpc_ssl_certificate ../cert/server-cert.pem;
+           grpc_ssl_certificate_key ../cert/server-key.pem;
+        }
+    }
+}
+```
 
 ## 资源
 - [jwt.io](https://jwt.io/) 解析 jwt token。

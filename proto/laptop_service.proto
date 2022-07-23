@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option go_package = "./;pb";
-package proto;
+package pcbook;
 
 import "laptop_message.proto";
 import "filter_message.proto";

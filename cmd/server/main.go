@@ -40,7 +40,7 @@ const (
 )
 
 func accessibleRoles() map[string][]string {
-	const laptopServicePath = "/proto.LaptopService/"
+	const laptopServicePath = "/pcbook.LaptopService/"
 	return map[string][]string{
 		laptopServicePath + "CreateLaptop": {"admin"},
 		laptopServicePath + "UploadImage":  {"admin"},

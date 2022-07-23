@@ -83,7 +83,7 @@ const (
 )
 
 func authMethods() map[string]bool {
-	const laptopServicePath = "/proto.LaptopService/"
+	const laptopServicePath = "/pcbook.LaptopService/"
 	return map[string]bool{
 		laptopServicePath + "CreateLaptop": true,
 		laptopServicePath + "UploadImage":  true,
